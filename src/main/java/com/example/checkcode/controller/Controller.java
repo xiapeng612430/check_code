@@ -13,7 +13,7 @@ public class Controller {
     @RequestMapping(value = "/index")
     public ModelAndView test(ModelAndView mv) {
         mv.setViewName("/index");
-        mv.addObject("title", "欢迎使用Thymeleaf!");
+        mv.addObject("title", "欢迎!");
         return mv;
     }
 }

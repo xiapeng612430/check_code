@@ -8,6 +8,10 @@
 <body>
 <p th:text="'Hello, ' + ${title}" /><br/>
 
+验证码: <input type="text" name="checkCode"/>
+<img alt="验证码" src="<%=request.getContextPath()%>/servlet/ImageServlet"/>
+<a href="javascript:reloadCode">看不清楚</a>
+
 <script th:src="@{/js/jquery/1.11.0/jquery.js}"></script>
 <script>
     $(function(){
