@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.Random;
+import java.io.PrintWriter;
 import java.util.concurrent.ThreadLocalRandom;
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
@@ -18,8 +18,6 @@ import org.springframework.web.servlet.ModelAndView;
  */
 @org.springframework.stereotype.Controller
 public class Controller {
-
-    ThreadLocalRandom random = ThreadLocalRandom.current();
 
     @RequestMapping(value = "/index")
     public ModelAndView test(ModelAndView mv) throws IOException {
@@ -45,14 +43,27 @@ public class Controller {
         int index;
         StringBuffer sb = new StringBuffer();
         for (int i = 0; i < 4; i++) {
-            index = random.nextInt(len);
-            graphics.setColor(new Color(random.nextInt(88), random.nextInt(188), random.nextInt(255)));
+            index = ThreadLocalRandom.current().nextInt(10);
+            graphics.setColor(new Color(ThreadLocalRandom.current().nextInt(88), ThreadLocalRandom.current().nextInt(188), ThreadLocalRandom.current().nextInt(255)));
             graphics.drawString(chars[index] + "", (i * 15) + 3, 18);
             sb.append(chars[index]);
         }
-        request.getSession().setAttribute("piccode", sb.toString());
+        request.getSession().setAttribute("picCode", sb.toString());
         ImageIO.write(bufferedImage, "JPG", response.getOutputStream());
         response.getOutputStream().flush();
         response.getOutputStream().close();
+    }
+
+    @RequestMapping("/check")
+    public void check(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String picCode = (String) request.getSession().getAttribute("picCode");
+        String checkCode = request.getParameter("checkCode");
+        PrintWriter out = response.getWriter();
+        if(picCode.equals(checkCode)){
+            out.println("验证成功！");
+        }
+        else{
+            out.println("验证失败！！！");
+        }
     }
 }

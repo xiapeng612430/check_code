@@ -1,19 +1,21 @@
 <!DOCTYPE HTML>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" >
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Getting Started: Serving Web Content</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 </head>
 <body>
-<p th:text="'Hello, ' + ${title}" /><br/>
+<p th:text="'Hello, ' + ${title}"/><br/>
 
-验证码: <input type="text" name="checkCode"/>
+验证码: <input type="text" id="checkCode" name="checkCode"/>
 <img alt="验证码" src="/getCheckCode"/>
-<a href="javascript:reloadCode">看不清楚</a>
+<a href="javascript:reloadCode()">看不清楚</a>
+
+<a href="javascript:check()">校验</a>
 
 <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.js"></script>
 <script>
-    $(function(){
+    $(function () {
         /*$.ajax({
             type: "post",
             url: "/getCheckCode",
@@ -25,6 +27,31 @@
         });*/
 
     });
+
+    function reloadCode() {
+        $.ajax({
+            type: "post",
+            url: "/getCheckCode",
+            success: function (data) {
+                //alert(1);
+            }
+        });
+
+    }
+
+    function check() {
+        var checkCode = $("#checkCode").val();
+        $.ajax({
+            type: "post",
+            url: "/check",
+            data: {checkCode: checkCode},
+            dataType: "text",
+            success: function (data) {
+                alert(1);
+            }
+        });
+    }
+
 </script>
 </body>
 </html>
